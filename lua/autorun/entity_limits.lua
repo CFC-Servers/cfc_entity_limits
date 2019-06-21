@@ -2,12 +2,16 @@ local limits = {
     gred_prop_ammobox = 1
 }
 
+local function getLimitName( class )
+    return "cfc_limits_"..class
+end
+
 for class, limit in pairs( limits ) do
-    local convarName = "sbox_maxcfc_"..class
-    CreateConVar( convarName , tostring(limit))
+    local limitName = getLimitName( class )
+    CreateConVar( "sbox_max"..limitName , tostring(limit))
     
     if CLIENT then
-        language.Add("sboxlimit_".."cfc_"..class, "You've hit the "..class.." limit!")
+        language.Add("sboxlimit_"..limitName, "You've hit the "..class.." limit!")
     end
 end
 
@@ -16,7 +20,7 @@ if not SERVER then return end
 local function playerCanSpawn( ply, class )
     if not limits[class] then return end
     
-    local canSpawn = ply:CheckLimit( "cfc_"..class )
+    local canSpawn = ply:CheckLimit( getLimitName( class ) )
     if not canSpawn then return false end
 end
 
@@ -24,7 +28,7 @@ local function playerSpawnedEnt( ply, ent )
     local class = ent:GetClass()
     if not limits[class] then return end
     
-    ply:AddCount( "cfc_"..class, ent )
+    ply:AddCount( getLimitName( class ), ent )
 end
 
 hook.Remove( "PlayerSpawnSENT", "CFC_EntLimits_CanPlayerSpawn" )
