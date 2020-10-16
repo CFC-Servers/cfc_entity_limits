@@ -6,3 +6,4 @@ CFCEntityLimits.Logger = CFCLogger "CFCEntityLimits"
 
 import "utils.lua"
 import "storage.lua"
+import "limiter.lua"

@@ -2,6 +2,7 @@ import Storage from CFCEntityLimits
 
 class Limiter
     new: =>
+        @current = {}
         @onSpawnHook = "CFC_EntityLimits_CheckOnSpawn"
         @onSpawnedHook = "CFC_EntityLimits_CountOnSpawned"
         @onJoinHook = "CFC_EntityLimits_InitPlayer"
