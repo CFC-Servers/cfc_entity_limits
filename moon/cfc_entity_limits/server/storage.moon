@@ -9,6 +9,17 @@ class Storage
         Logger\debug "SQLite Storage module loaded"
         hook.Add "PostGamemodeLoaded", "CFC_EntityLimits_DBInit", -> @setup!
 
+        @onJoinHook = "CFC_EntityLimits_InitPlayer"
+        @onLeaveHook = "CFC_EntityLimits_UntrackPlayer"
+
+        hook.Add "PlayerInitialSpawn", @onJoinHook, ->
+            hook.Remove "PlayerInitialSpawn", "CFC_EntityLimits_InitPlayer" unless self
+            @updatePlayerCache!
+
+        hook.Add "PlayerDisconnected", @onJoinHook, ->
+            hook.Remove "PlayerDisconnected", "CFC_EntityLimits_UntrackPlayer" unless self
+            @updatePlayerCache!
+
         @updateGroupCache!
         @updatePlayerCache!
 
