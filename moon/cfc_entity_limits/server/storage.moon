@@ -1,6 +1,6 @@
-from CFCEntityLimits.Utils import Logger
-from sql import SQLStr, Query
-from string import format
+import Logger from CFCEntityLimits.Utils
+import SQLStr, Query from sql
+import format from string
 
 SQL_NULL = {}
 
