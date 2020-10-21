@@ -16,10 +16,12 @@ class Limiter
             canSpawn = @canSpawnEnt ...
 
             return false unless canSpawn
+            nil
 
         hook.Add "PlayerSpawnedSENT", @onSpawnedHook, (...) ->
             hook.Remove "PlayerSpawnedSENT", "CFC_EntityLimits_CountOnSpawned" unless self
             @playerSpawnedEnt ...
+            nil
 
         hook.Add "PlayerInitialSpawn", @onJoinHook, (ply) ->
             hook.Remove "PlayerInitialSpawn", "CFC_EntityLimits_InitPlayer" unless self
@@ -28,6 +30,10 @@ class Limiter
         hook.Add "PlayerDisconnected", @onLeaveHook, (ply) ->
             hook.Remove "PlayerDisconnected", "CFC_EntityLimits_UntrackPlayer" unless self
             @current[ply] = nil
+
+        hook.Add "EntityCreated", @onCreatedHook, (ent) ->
+            hook.Remove "EntityCreated", "CFC_EntityLimits_CheckForLimits" unless self
+            @entCreated ent
 
         hook.Add "EntityRemoved", @onRemovedHook, (ent) ->
             hook.Remove "EntityRemoved", "CFC_EntityLimits_UntrackEnt" unless self
